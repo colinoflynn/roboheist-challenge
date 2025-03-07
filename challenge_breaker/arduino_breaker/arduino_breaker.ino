@@ -109,7 +109,7 @@ void loop() {
       sprintf(tempbeacon, "PWR 0");
     }
     breakSerial.write(tempbeacon);
-    sprintf(tempbeacon, "%02x\n", chksum(tempbeacon, 5));
+    sprintf(tempbeacon, " %02x\n", chksum(tempbeacon, 5));
     breakSerial.write(tempbeacon);
     counttime = 0;
   }
