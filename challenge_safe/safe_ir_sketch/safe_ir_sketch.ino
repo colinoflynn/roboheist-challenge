@@ -40,7 +40,7 @@ void setup() {
     pinMode(txPinforLED, OUTPUT);
 
     breakSerial.begin(600);
-    Serial.begin(9600);   
+    Serial.begin(115200);
 }
 
 uint8_t chksum(char * data, unsigned char len){
@@ -65,23 +65,26 @@ char tempbeacon[20];
 int lenRead = 0;
 char c;
 
+char status = '?';
+char digit = '?';
+
 void loop() {
-  if (Serial.available()) {
+  while (Serial.available()) {
     c = Serial.read();
-    tempsafe[lenRead++] = c;
+
+    if((c >= '0') && (c <= '9')){
+      digit = c;
+    }
+
+    if( c=='U' || c=='L'){
+      status = c;
+    }
   }
 
-  if(lenRead > 3){
-    lenRead = 0;
-  }
+  sprintf(tempbeacon, "SAF %c:%c", digit, status);
+  breakSerial.write(tempbeacon);
+  sprintf(tempbeacon, " %02x\n", chksum(tempbeacon, 7));
+  breakSerial.write(tempbeacon);
 
-  if ((c == "L") || (c == "U") && (lenRead == 2)){
-    sprintf(tempbeacon, "SAF %c:%c", tempsafe[0], tempsafe[1]);
-    lenRead = 0;
-
-    breakSerial.write(tempbeacon);
-    sprintf(tempbeacon, " %02x\n", chksum(tempbeacon, 7));
-    breakSerial.write(tempbeacon); 
-  }
-
+  delay(400);
 }
