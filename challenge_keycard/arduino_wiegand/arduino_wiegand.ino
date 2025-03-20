@@ -12,6 +12,9 @@
 #define PIN_BEEP 8
 #define PIN_LED  7
 
+#define PIN_MAGNET 13
+#define PIN_STATUS 12
+
 //IR LED
 const byte dbrxPin = 4;
 const byte dbtxPin = 5;
@@ -55,6 +58,12 @@ void setup() {
   digitalWrite(PIN_LED, HIGH);
   pinMode(PIN_BEEP, OUTPUT);
   pinMode(PIN_LED, OUTPUT);
+  pinMode(PIN_MAGNET, OUTPUT);
+  pinMode(PIN_STATUS, OUTPUT);
+
+  digitalWrite(PIN_MAGNET, HIGH);
+  digitalWrite(PIN_STATUS, LOW);
+  
   attachInterrupt(digitalPinToInterrupt(PIN_D0), pinStateChanged, CHANGE);
   attachInterrupt(digitalPinToInterrupt(PIN_D1), pinStateChanged, CHANGE);
 
@@ -148,6 +157,8 @@ void receivedDataError(Wiegand::DataError error, uint8_t* rawData, uint8_t rawBi
         
         digitalWrite(PIN_LED, LOW);
         digitalWrite(PIN_BEEP, LOW);
+        digitalWrite(PIN_STATUS, HIGH);
+        digitalWrite(PIN_MAGNET, LOW);
         _delay_ms(150);
         digitalWrite(PIN_BEEP, HIGH);
         _delay_ms(150);
@@ -156,6 +167,7 @@ void receivedDataError(Wiegand::DataError error, uint8_t* rawData, uint8_t rawBi
         digitalWrite(PIN_BEEP, HIGH);
         _delay_ms(150);
         digitalWrite(PIN_BEEP, LOW);
+        digitalWrite(PIN_MAGNET, HIGH);
         _delay_ms(150);
         digitalWrite(PIN_BEEP, HIGH);
         _delay_ms(150);
@@ -164,6 +176,7 @@ void receivedDataError(Wiegand::DataError error, uint8_t* rawData, uint8_t rawBi
         digitalWrite(PIN_BEEP, HIGH);
         _delay_ms(2000);
         digitalWrite(PIN_LED, HIGH);
+        digitalWrite(PIN_STATUS, LOW);
       }
 
       /*

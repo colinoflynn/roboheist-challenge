@@ -13,6 +13,7 @@ but this is used for basic visual signalling.
 static int pinLEDRed = 4;
 static int pinLEDGreen = 5;
 static int pinReed = 3;
+static int pinStatus = 12;
 
 int reedState = 0;
 
@@ -21,6 +22,9 @@ void setup() {
   pinMode(pinLEDGreen, OUTPUT);
   // initialize the pushbutton pin as an input:
   pinMode(pinReed, INPUT_PULLUP);
+
+  pinMode(pinStatus, OUTPUT);
+  digitalWrite(pinStatus, 0);
 }
 
 void loop() {
@@ -30,8 +34,10 @@ void loop() {
   if (reedState){
     digitalWrite(pinLEDRed, 1);
     digitalWrite(pinLEDGreen, 0);
+    digitalWrite(pinStatus, 0);
   } else {
-     digitalWrite(pinLEDRed, 0);
-    digitalWrite(pinLEDGreen, 1);   
+    digitalWrite(pinLEDRed, 0);
+    digitalWrite(pinLEDGreen, 1);
+    digitalWrite(pinStatus, 1);
   }
 }

@@ -44,6 +44,7 @@ void setup() {
     pinMode(txPin, OUTPUT);
 
     mySerial.begin(300);
+    Serial.begin(600);
 }
 
 uint8_t chksum(char * data, unsigned char len){

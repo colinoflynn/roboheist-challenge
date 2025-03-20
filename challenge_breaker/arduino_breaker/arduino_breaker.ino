@@ -9,6 +9,8 @@ const byte switchPin = 2;
 const int LED_RED = 3;
 const int LED_GREEN = 5;
 
+const int PIN_STATUS = 13;
+
 // Set up a new SoftwareSerial object
 SoftwareSerial breakSerial (rxPin, txPin);
 
@@ -53,12 +55,15 @@ void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
     pinMode(LED_GREEN, OUTPUT);
     pinMode(LED_RED, OUTPUT);
+    pinMode(PIN_STATUS, OUTPUT);
 
     breakSerial.begin(600);
 
     digitalWrite(LED_BUILTIN, 1);
     digitalWrite(LED_RED, 0);
     digitalWrite(LED_GREEN, 1);
+
+    digitalWrite(PIN_STATUS, 0);
 }
 
 uint8_t chksum(char * data, unsigned char len){
@@ -90,6 +95,8 @@ void loop() {
   _delay_ms(50);
 
   lastled ^= 1;
+
+  digitalWrite(PIN_STATUS, pwr ? 0 : 1);
 
   if(counttime & 1){
     if(pwr){
